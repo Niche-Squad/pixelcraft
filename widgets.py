@@ -41,7 +41,7 @@ def drawable_image(
         height=height,
         width=width,
         drawing_mode="transform" if is_transform else "rect",
-        point_display_radius=0,
+        # point_display_radius=0, # not available in 0.8.0
         key="canvas_%d" % idx,
     )
     time.sleep(0.5)
