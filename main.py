@@ -46,7 +46,6 @@ def main():
             state=st.session_state.json_data[cur_i],
             is_transform=edit,
         )
-        st.image(img_pil, use_column_width=True)
         st.write(file_imgs[cur_i].name)
         # extract canvas
         while not canvas.json_data:
