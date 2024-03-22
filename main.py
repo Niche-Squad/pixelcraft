@@ -1,20 +1,19 @@
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
-
+import pandas as pd
 
 # local imports
 from sidebar import deploy_sidebar
-from globals import init_globals, update_globals
-from widgets import (
-    image_uploader,
-    next_prev_buttons,
-    slider_selector,
-    chart_anns,
-    toggle_canvas,
-    Timer,
+from globals import (
+    canvas_to_states,
+    init_globals,
+    update_globals,
+    canvas_to_states,
 )
+from widgets import image_uploader
 from outputs import make_dataframe, extract_canvas
-from callbacks import enable_hotkeys
+
+from callbacks import next_img, prev_img, slide_i, enable_hotkeys
 
 
 def main():
@@ -38,14 +37,25 @@ def main():
     if not loaded:
         st.success("Please upload images to get started")
     else:
-        ## --- Image Viewer ---
+        ## Image Viewer -------------------------------------------
         st.subheader("Image Viewer")
-        tog_edit, tog_auto = toggle_canvas()
+        ## Toggles ------------------------------------------------
+        tg1, tg2 = st.columns(2)
+        with tg1:
+            tog_edit = st.toggle("Edit Bounding Boxes", False)
+        with tg2:
+            tog_auto = st.toggle(
+                "Refresh on-the-fly (Slower)", False, key="autorefresh"
+            )
+        if not st.session_state.autorefresh:
+            st.success("Right-click on the canvas to refresh the annotations")
+        ## Get states ------------------------------------------------
         cur_i = st.session_state.cur_i
+        n_imgs = st.session_state.n_imgs
         img_pil = st.session_state.pil_imgs[cur_i]
         state = st.session_state.json_data[cur_i]
         filename = st.session_state.file_imgs[cur_i].name
-        # drawing state
+        ## drawable canvas ------------------------------------------------
         canvas = st_canvas(
             initial_drawing=state,
             fill_color="rgba(255, 90, 0, 0.3)",
@@ -58,34 +68,56 @@ def main():
             width=img_pil.width,
             drawing_mode="transform" if tog_edit else "rect",
             # point_display_radius=0, # not available in 0.8.0
-            key="canvas_%d" % cur_i,
+            key="canvas",
         )
         st.write(filename)
-        # extract canvas
         while not canvas.json_data:
             pass
-
-        # update session state
-        json_objs, cropped_img = extract_canvas(
-            canvas.json_data["objects"],
-            img_pil,
+        canvas_to_states(cur_i, canvas, img_pil, filename)
+        ## Next/Prev Buttons -------------------------------------------
+        col_b1, col_b2 = st.columns([5, 1])
+        col_b1.button(
+            "Previous Image",
+            on_click=prev_img,
         )
-        json_out = dict(
+        col_b2.button(
+            "Next Image",
+            on_click=next_img,
+        )
+        # Slider ------------------------------------------------
+        if n_imgs == 1:
+            st.empty()
+        else:
+            st.select_slider(
+                "File Index",
+                options=range(n_imgs),
+                value=cur_i,
+                on_change=slide_i,
+                key="slider_index",
+                label_visibility="collapsed",
+            )
+        # Chart ------------------------------------------------
+        json_out = st.session_state.json_out
+        n_anns = [len(json["objects"]) for json in json_out]
+        data = pd.DataFrame(
             {
-                "filename": filename,
-                "objects": json_objs,
+                "n_bbox": [n_anns],
             }
         )
-        st.session_state.json_data_tmp = canvas.json_data
-        st.session_state.json_out[cur_i] = json_out
-        st.session_state.cropped_imgs[cur_i] = cropped_img
+        st.dataframe(
+            data,
+            column_config={
+                "n_bbox": st.column_config.LineChartColumn(
+                    "Number of Bounding Boxes",
+                    y_min=0,
+                    y_max=10,
+                )
+            },
+            hide_index=True,
+            use_container_width=True,
+        )
 
-        ## --- Image Selector ---
-        next_prev_buttons()
-        slider_selector()
-        chart_anns()
-
-        ## --- Output Dataframe ---
+        ## Output Dataframe -------------------------------------------
         st.subheader("Output Dataframe")
         result = make_dataframe()
         st.dataframe(result)

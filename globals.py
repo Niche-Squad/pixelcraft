@@ -1,6 +1,9 @@
 import streamlit as st
 from PIL import Image
 
+# local
+from outputs import extract_canvas
+
 
 def load_image(img, tgt_width=640):
     pil_in = Image.open(img)
@@ -79,3 +82,20 @@ def caching_images():
             st.session_state.pil_imgs[i] = pil
         bar.progress((i + 1) * portion, text=text_bar)
     bar.empty()
+
+
+def canvas_to_states(cur_i, canvas, img_pil, filename):
+    # update session state
+    json_objs, cropped_img = extract_canvas(
+        canvas.json_data["objects"],
+        img_pil,
+    )
+    json_out = dict(
+        {
+            "filename": filename,
+            "objects": json_objs,
+        }
+    )
+    st.session_state.json_data_tmp = canvas.json_data
+    st.session_state.json_out[cur_i] = json_out
+    st.session_state.cropped_imgs[cur_i] = cropped_img
