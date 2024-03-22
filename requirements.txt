@@ -1,0 +1,2 @@
+streamlit_shortcuts
+streamlit_drawable_canvas
