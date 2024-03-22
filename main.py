@@ -15,6 +15,13 @@ from callbacks import enable_hotkeys
 
 
 def main():
+    st.set_page_config(
+        page_title="PixelCraft",
+        page_icon=None,
+        layout="centered",
+        initial_sidebar_state="auto",
+        menu_items=None,
+    )
     init_globals()
     enable_hotkeys()
 
@@ -41,6 +48,8 @@ def main():
         )
         st.write(file_imgs[cur_i].name)
         # extract canvas
+        while not canvas.json_data:
+            pass
         json_objs, cropped_img = extract_canvas(
             canvas.json_data["objects"],
             img_pil,

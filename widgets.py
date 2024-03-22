@@ -63,13 +63,16 @@ def next_prev_buttons():
 def slider_selector():
     cur_i = st.session_state.cur_i
     n_imgs = st.session_state.n_imgs
-    return st.select_slider(
-        "File Index",
-        options=range(n_imgs),
-        value=cur_i,
-        on_change=slide_i,
-        key="slider_index",
-    )
+    if n_imgs == 1:
+        return st.empty()
+    else:
+        return st.select_slider(
+            "File Index",
+            options=range(n_imgs),
+            value=cur_i,
+            on_change=slide_i,
+            key="slider_index",
+        )
 
 
 def chart_anns():
