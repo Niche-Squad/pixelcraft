@@ -22,8 +22,6 @@ st.set_page_config(
     menu_items=None,
 )
 enable_hotkeys()
-
-# components
 st.title("PixelCraft 🎨")
 st.session_state.file_imgs = image_uploader()
 st.session_state.n_imgs = len(st.session_state.file_imgs)
@@ -43,5 +41,4 @@ else:
     show_next_prev_buttons()
     show_ann_count()
     show_output_df()
-
 show_sidebar(loaded)
