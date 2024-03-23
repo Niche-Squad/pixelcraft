@@ -8,8 +8,6 @@ def change_cur_i(i):
     cur_i = st.session_state.cur_i
     st.session_state.json_data[cur_i] = st.session_state.json_data_tmp
     st.session_state.cur_i = i
-    st.session_state.counter = (st.session_state.counter + 1) % 2  # be either 0 or 1
-    del st.session_state["canvas%d" % cur_i]
     print("after changed:", i)
 
 

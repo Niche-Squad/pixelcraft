@@ -1,11 +1,53 @@
 from PIL import Image
 import pandas as pd
 import streamlit as st
-from streamlit_drawable_canvas import st_canvas
 import time
 
+# local
+from callbacks import slide_i, next_img, prev_img
 
-# local imports
+
+def show_toggles():
+    tg1, tg2 = st.columns(2)
+    with tg1:
+        tog_edit = st.toggle("Edit Bounding Boxes", False)
+    with tg2:
+        tog_auto = st.toggle("Refresh on-the-fly (Slower)", True, key="autorefresh")
+    if not st.session_state.autorefresh:
+        st.success("Right-click on the canvas to refresh the annotations")
+    return tog_auto, tog_edit
+
+
+def show_next_prev_buttons():
+    col_b1, col_b2 = st.columns([5, 1])
+    col_b1.button(
+        "Previous Image",
+        on_click=prev_img,
+    )
+    col_b2.button(
+        "Next Image",
+        on_click=next_img,
+    )
+
+
+def show_image_slider():
+    cur_i = st.session_state.cur_i
+    n_imgs = st.session_state.n_imgs
+
+    if n_imgs == 1:
+        st.empty()
+    else:
+        st.slider(
+            "File Index",
+            min_value=0,
+            max_value=n_imgs - 1,
+            value=cur_i,
+            on_change=slide_i,
+            key="slider_index",
+            label_visibility="collapsed",
+        )
+
+
 def image_uploader():
     uploader = st.file_uploader(
         "Upload Image",
@@ -27,4 +69,4 @@ class Timer:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         end = time.time()
-        st.info(f"{self.message} in {end - self.start:.2f} seconds")
+        st.info(f"{self.message}: {end - self.start:.2f} seconds")
