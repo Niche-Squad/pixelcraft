@@ -8,9 +8,8 @@ from outputs import show_ann_count, show_output_df
 from sidebar import show_sidebar
 from widgets import (
     image_uploader,
-    show_image_slider,
-    show_next_prev_buttons,
-    show_toggles,
+    show_navigator,
+    show_ui,
 )
 
 
@@ -31,14 +30,13 @@ if not loaded:
     st.success("Please upload images to get started")
 else:
     update_globals()
-    st.subheader("Image Viewer")
+    st.header("Image Viewer")
 
-    tog_auto, tog_edit = show_toggles()
+    tog_auto, tog_edit = show_ui()
     canvas = show_canvas(tog_auto, tog_edit)
     canvas_to_states(canvas)
 
-    show_image_slider()
-    show_next_prev_buttons()
+    show_navigator()
     show_ann_count()
     show_output_df()
 show_sidebar(loaded)

@@ -11,6 +11,16 @@ def change_cur_i(i):
     print("after changed:", i)
 
 
+def slide_seg():
+    slider_value = st.session_state.slider_seg
+    print(
+        "callback: slide_seg (%d, %d)" % (slider_value, st.session_state.seg_strength)
+    )
+    if slider_value != st.session_state.seg_strength:
+        print("change strength!")
+        st.session_state.seg_strength = slider_value
+
+
 def slide_i():
     slider_value = st.session_state.slider_index
     print("callback: slide_i (%d, %d)" % (slider_value, st.session_state.cur_i))

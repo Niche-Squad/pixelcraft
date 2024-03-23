@@ -22,6 +22,8 @@ def init_globals():
     # VARIABLES -----------------------------------------
     if "cur_i" not in st.session_state:
         st.session_state.cur_i = 0
+    if "seg_strength" not in st.session_state:
+        st.session_state.seg_strength = 0
 
 
 def update_globals():

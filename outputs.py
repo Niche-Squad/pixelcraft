@@ -35,9 +35,7 @@ def show_output_df():
 
 
 def make_dataframe():
-    result = pd.DataFrame(
-        columns=["filename", "x", "y", "w", "h", "red", "green", "blue"]
-    )
+    result = None
     for json_out in st.session_state.json_out:
         for obj in json_out["objects"]:
             data_tmp = pd.DataFrame(

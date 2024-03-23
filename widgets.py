@@ -4,43 +4,52 @@ import streamlit as st
 import time
 
 # local
-from callbacks import slide_i, next_img, prev_img
+from callbacks import slide_seg, slide_i, next_img, prev_img
 
 
-def show_toggles():
+def show_ui():
     tg1, tg2 = st.columns(2)
     with tg1:
         tog_edit = st.toggle("Transform Bounding Boxes", False, key="toggle_edit")
     with tg2:
         tog_auto = st.toggle("Refresh on-the-fly (Slower)", True, key="toggle_auto")
+    # slider for segmentation
+    st.subheader("Thresholding Segmentation Strength")
+    st.slider(
+        "Segmentation Strength",
+        min_value=0,
+        max_value=10,
+        value=0,
+        on_change=slide_seg,
+        key="slider_seg",
+        label_visibility="collapsed",
+    )
     if st.session_state.toggle_edit:
         st.success("Drag the corners to transform the bounding boxes")
     else:
         st.success("Draw a rectangle on the canvas to create a new bounding box")
     if not st.session_state.toggle_auto:
         st.success("Right-click on the canvas to render the annotations")
+
     return tog_auto, tog_edit
 
 
-def show_next_prev_buttons():
-    col_b1, col_b2 = st.columns([5, 1])
-    col_b1.button(
-        "Previous Image",
-        on_click=prev_img,
-    )
-    col_b2.button(
-        "Next Image",
-        on_click=next_img,
-    )
-
-
-def show_image_slider():
+def show_navigator():
     cur_i = st.session_state.cur_i
     n_imgs = st.session_state.n_imgs
 
     if n_imgs == 1:
         st.empty()
     else:
+        col_b1, col_b2 = st.columns([4, 1])
+        col_b1.button(
+            "⬅︎ Previous Image",
+            on_click=prev_img,
+        )
+        col_b2.button(
+            "Next Image ➡︎",
+            on_click=next_img,
+        )
         st.success("Drag the slider to navigate between images")
         st.slider(
             "File Index",
