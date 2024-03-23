@@ -4,9 +4,8 @@ import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 import time
 
+
 # local imports
-
-
 def image_uploader():
     uploader = st.file_uploader(
         "Upload Image",

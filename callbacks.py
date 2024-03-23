@@ -8,16 +8,21 @@ def change_cur_i(i):
     cur_i = st.session_state.cur_i
     st.session_state.json_data[cur_i] = st.session_state.json_data_tmp
     st.session_state.cur_i = i
-    time.sleep(0.5)
-    print("current index:", i)
+    st.session_state.counter = (st.session_state.counter + 1) % 2  # be either 0 or 1
+    del st.session_state["canvas%d" % cur_i]
+    print("after changed:", i)
 
 
 def slide_i():
     slider_value = st.session_state.slider_index
-    change_cur_i(slider_value)
+    print("callback: slide_i (%d, %d)" % (slider_value, st.session_state.cur_i))
+    if slider_value != st.session_state.cur_i:
+        print("change index!")
+        change_cur_i(slider_value)
 
 
 def next_img():
+    print("callback: next_img")
     i = st.session_state.cur_i
     n_imgs = st.session_state.n_imgs
     i += 1
@@ -27,6 +32,7 @@ def next_img():
 
 
 def prev_img():
+    print("callback: prev_img")
     i = st.session_state.cur_i
     n_imgs = st.session_state.n_imgs
     i -= 1
