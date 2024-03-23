@@ -2,11 +2,11 @@
 
 ## Cloud Version
 
-- Heroku (recommended)
-<https://pixelcraft-vt-bdd6ac4ecdab.herokuapp.com/>
-
 - Streamlit Cloud
 <https://pixelcraft.streamlit.app/>
+
+- Heroku
+<https://pixelcraft-vt-bdd6ac4ecdab.herokuapp.com/>
 
 ## Local Deployment
 
