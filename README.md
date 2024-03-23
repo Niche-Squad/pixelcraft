@@ -1,4 +1,4 @@
-# PixelCraft
+# PixelCraft 🎨
 
 ## Cloud Version
 
