@@ -12,22 +12,22 @@ def show_canvas(tog_auto, tog_edit):
     state = st.session_state.json_data[cur_i]
     filename = st.session_state.file_imgs[cur_i].name
 
-    with Timer("Rendering Time"):
-        canvas = st_canvas(
-            initial_drawing=state,
-            fill_color="rgba(255, 90, 0, 0.3)",
-            stroke_width=1,
-            stroke_color="rgb(255, 0, 0, 1)",
-            background_color="#fff",
-            background_image=img_pil,
-            update_streamlit=tog_auto,
-            height=img_pil.height,
-            width=img_pil.width,
-            drawing_mode="transform" if tog_edit else "rect",
-            # point_display_radius=0, # not available in 0.8.0
-            key="canvas%d" % cur_i,
-        )
-        st.write(filename)
+    # with Timer("Rendering Time"):
+    canvas = st_canvas(
+        initial_drawing=state,
+        fill_color="rgba(255, 90, 0, 0.3)",
+        stroke_width=1,
+        stroke_color="rgb(255, 0, 0, 1)",
+        background_color="#fff",
+        background_image=img_pil,
+        update_streamlit=tog_auto,
+        height=img_pil.height,
+        width=img_pil.width,
+        drawing_mode="transform" if tog_edit else "rect",
+        # point_display_radius=0, # not available in 0.8.0
+        key="canvas%d" % cur_i,
+    )
+    st.write(filename)
     return canvas
 
 

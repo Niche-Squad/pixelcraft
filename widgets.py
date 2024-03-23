@@ -10,11 +10,15 @@ from callbacks import slide_i, next_img, prev_img
 def show_toggles():
     tg1, tg2 = st.columns(2)
     with tg1:
-        tog_edit = st.toggle("Edit Bounding Boxes", False)
+        tog_edit = st.toggle("Transform Bounding Boxes", False, key="toggle_edit")
     with tg2:
-        tog_auto = st.toggle("Refresh on-the-fly (Slower)", True, key="autorefresh")
-    if not st.session_state.autorefresh:
-        st.success("Right-click on the canvas to refresh the annotations")
+        tog_auto = st.toggle("Refresh on-the-fly (Slower)", True, key="toggle_auto")
+    if st.session_state.toggle_edit:
+        st.success("Drag the corners to transform the bounding boxes")
+    else:
+        st.success("Draw a rectangle on the canvas to create a new bounding box")
+    if not st.session_state.toggle_auto:
+        st.success("Right-click on the canvas to render the annotations")
     return tog_auto, tog_edit
 
 
@@ -37,6 +41,7 @@ def show_image_slider():
     if n_imgs == 1:
         st.empty()
     else:
+        st.success("Drag the slider to navigate between images")
         st.slider(
             "File Index",
             min_value=0,

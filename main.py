@@ -39,8 +39,8 @@ else:
     canvas = show_canvas(tog_auto, tog_edit)
     canvas_to_states(canvas)
 
-    show_next_prev_buttons()
     show_image_slider()
+    show_next_prev_buttons()
     show_ann_count()
     show_output_df()
 
