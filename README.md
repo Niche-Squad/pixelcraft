@@ -5,9 +5,6 @@
 - Heroku
 <https://pixelcraft-vt-bdd6ac4ecdab.herokuapp.com/>
 
-- Streamlit Cloud (Backup Server)
-<https://pixelcraft.streamlit.app/>
-
 ## Local Deployment
 
 ```shell
