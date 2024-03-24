@@ -13,12 +13,10 @@ def change_cur_i(i):
 
 def slide_seg():
     slider_value = st.session_state.slider_seg
-    print(
-        "callback: slide_seg (%d, %d)" % (slider_value, st.session_state.seg_strength)
-    )
-    if slider_value != st.session_state.seg_strength:
+    print("callback: slide_seg (%d, %d)" % (slider_value, st.session_state.seg_binary))
+    if slider_value != st.session_state.seg_binary:
         print("change strength!")
-        st.session_state.seg_strength = slider_value
+        st.session_state.seg_binary = slider_value
 
 
 def slide_i():

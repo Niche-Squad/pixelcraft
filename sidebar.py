@@ -1,4 +1,8 @@
 import streamlit as st
+import datetime
+
+# local imports
+from callbacks import slide_seg
 
 
 def show_sidebar(loaded):
@@ -9,8 +13,22 @@ def show_sidebar(loaded):
         show_about()
 
 
+def show_threshold_slider():
+    st.subheader("Thresholding Strength")
+    st.slider(
+        "Thresholding Strength",
+        min_value=0,
+        max_value=10,
+        value=0,
+        on_change=slide_seg,
+        key="slider_seg",
+        label_visibility="collapsed",
+    )
+
+
 def show_cropped_images():
     st.header("Cropped Images")
+    show_threshold_slider()
     cur_i = st.session_state.cur_i
     imgs = st.session_state.cropped_imgs[cur_i]
     if imgs:
@@ -33,3 +51,6 @@ def show_about():
             Blacksburg, VA, USA
             """
     )
+    st.divider()
+    today = datetime.date.today().strftime("%B %d, %Y")
+    st.write("Last updated:", today)

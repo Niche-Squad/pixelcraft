@@ -30,8 +30,6 @@ if not loaded:
     st.success("Please upload images to get started")
 else:
     update_globals()
-    st.header("Image Viewer")
-
     tog_auto, tog_edit = show_ui()
     canvas = show_canvas(tog_auto, tog_edit)
     canvas_to_states(canvas)

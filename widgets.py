@@ -3,27 +3,18 @@ import pandas as pd
 import streamlit as st
 import time
 
-# local
-from callbacks import slide_seg, slide_i, next_img, prev_img
+# local imports
+from callbacks import slide_i, next_img, prev_img
 
 
 def show_ui():
+    st.divider()
     tg1, tg2 = st.columns(2)
     with tg1:
-        tog_edit = st.toggle("Transform Bounding Boxes", False, key="toggle_edit")
+        tog_edit = st.toggle("Transform the bounding boxes", False, key="toggle_edit")
     with tg2:
-        tog_auto = st.toggle("Refresh on-the-fly (Slower)", True, key="toggle_auto")
-    # slider for segmentation
-    st.subheader("Thresholding Segmentation Strength")
-    st.slider(
-        "Segmentation Strength",
-        min_value=0,
-        max_value=10,
-        value=0,
-        on_change=slide_seg,
-        key="slider_seg",
-        label_visibility="collapsed",
-    )
+        tog_auto = st.toggle("Render on-the-fly (slower)", True, key="toggle_auto")
+
     if st.session_state.toggle_edit:
         st.success("Drag the corners to transform the bounding boxes")
     else:
@@ -41,7 +32,7 @@ def show_navigator():
     if n_imgs == 1:
         st.empty()
     else:
-        col_b1, col_b2 = st.columns([4, 1])
+        col_b1, col_b2 = st.columns([3, 1])
         col_b1.button(
             "⬅︎ Previous Image",
             on_click=prev_img,

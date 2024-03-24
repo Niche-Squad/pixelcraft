@@ -4,7 +4,8 @@ from streamlit_drawable_canvas import st_canvas
 
 # local
 from widgets import Timer
-from images import segmentaion, avg_rgb
+from images import avg_rgb
+from segmentation import thresholding
 
 
 def show_canvas(tog_auto, tog_edit):
@@ -36,7 +37,7 @@ def canvas_to_states(canvas):
     cur_i = st.session_state.cur_i
     img_pil = st.session_state.pil_imgs[cur_i]
     filename = st.session_state.file_imgs[cur_i].name
-    strength = st.session_state.seg_strength
+    strength = st.session_state.seg_binary
     try:
         json_objs, cropped_img = extract_canvas(
             canvas.json_data["objects"],
@@ -56,7 +57,7 @@ def canvas_to_states(canvas):
         st.spinner("Buffering...")
 
 
-def extract_canvas(objects, img_pil, seg_strength=0):
+def extract_canvas(objects, img_pil, seg_binary=0):
     """
     objects: list
         canvas.json_data["objects"]
@@ -74,7 +75,7 @@ def extract_canvas(objects, img_pil, seg_strength=0):
         )
         # cropped image
         cropped_image = img_pil.crop((l, t, l + w, t + h))
-        segged_image = segmentaion(cropped_image, seg_strength)
+        segged_image = thresholding(cropped_image, seg_binary)
         cropped_imgs[i] = segged_image
         # calculate average channel values
         r, g, b = avg_rgb(segged_image)
